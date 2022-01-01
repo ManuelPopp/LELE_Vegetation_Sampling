@@ -24,8 +24,15 @@ iNaturalist_ID = args.iNatID
 project_ID = args.pr
 
 from pyinaturalist import *
-project_observations = get_observations(project_id = project_ID)
-observations = project_observations["results"]
+observations = []
+page_results = [1]
+p = 1
+while len(page_results) > 0:
+    page_results = get_observations(project_id = project_ID, \
+                                        per_page = 30, page = p)
+    page_results = page_results["results"]
+    observations += page_results
+    p += 1
 
 target = []
 for obs in observations:
