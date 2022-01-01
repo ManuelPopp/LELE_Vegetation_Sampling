@@ -17,9 +17,8 @@ observations = []
 page_results = [1]
 p = 1
 while len(page_results) > 0:
-    page_results = get_observations(project_id = project_ID, \
-                                        per_page = 30, page = p)
-    page_results = page_results["results"]
+    page = get_observations(project_id = project_ID, per_page = 30, page = p)
+    page = page_results["results"]
     observations += page_results
     p += 1
 
