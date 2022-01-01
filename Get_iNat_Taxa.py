@@ -13,8 +13,15 @@ filepath = os.path.join(filepath_parent, filename)
 project_ID = "lele-herbs-and-grasses"
 
 from pyinaturalist import *
-project_observations = get_observations(project_id = project_ID)
-observations = project_observations["results"]
+observations = []
+page_results = [1]
+p = 1
+while len(page_results) > 0:
+    page_results = get_observations(project_id = project_ID, \
+                                        per_page = 30, page = p)
+    page_results = page_results["results"]
+    observations += page_results
+    p += 1
 
 iNat_data = list()
 iNat_notes = list()
