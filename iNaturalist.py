@@ -30,7 +30,7 @@ observations = project_observations["results"]
 target = []
 for obs in observations:
     if obs["description"] is not None and obs["description"] != "":
-        if obs["description"] in iNaturalist_ID:
+        if iNaturalist_ID in obs["description"]:
             target.append(obs)
 
 if len(target) < 1:
