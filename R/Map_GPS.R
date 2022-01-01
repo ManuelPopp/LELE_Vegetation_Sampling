@@ -12,6 +12,7 @@ GPS_logs_path <- "/home/manuel/Downloads/tracker_data.xls"
 blocks_path <- "/home/manuel/Nextcloud/Masterarbeit/gis/QGIS/Shapefiles/Blocks.shp"
 borders_path <- "/home/manuel/Nextcloud/Masterarbeit/gis/QGIS/Shapefiles/Lapalala/LapalalaBorders.shp"
 mainroads_path <- "/home/manuel/Nextcloud/Masterarbeit/gis/QGIS/Shapefiles/Lapalala/MainRoads.shp"
+out_path <- "/home/manuel/Downloads/GPS_Tags.pdf"
 
 # colours
 cols <- c(
@@ -56,7 +57,7 @@ GPS_tags <- sp::spTransform(GPS_tags, target_crs)
 # plot
 ext <- raster::extent(borders_shp)
 
-pdf(file = "/home/manuel/Downloads/GPS_Tags.pdf", width = 7, height = 6)
+pdf(file = out_path, width = 7, height = 6)
 raster::plot(borders_shp, col = cols[1], axes = TRUE, main = paste("GPS Collar Locations", Sys.time()))
 raster::plot(mainroads_shp, col = cols[3], add = TRUE)
 raster::plot(blocks_shp, col = "black", add = TRUE)
