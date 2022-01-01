@@ -1,7 +1,7 @@
 # LELE_Vegetation_Sampling
 Scripts for vegetation sampling tasks within the LELE Project
 
-# Prerequisites for usage of the iNaturalist API
+# Prerequisites for using the iNaturalist API
 1) Install Python3 and pip3
 See also https://realpython.com/installing-python/#how-to-install-python-on-linux
 $ sudo apt-get update
