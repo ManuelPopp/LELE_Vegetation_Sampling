@@ -130,11 +130,12 @@ tmp_dir = tempfile.mkdtemp()
 for objID in oids:
     attachments_list = FeatureLayer.attachments.get_list(oid = objID)
     if len(attachments_list) >= 1:
-        for attmID in range(1, len(attachments_list)):
+        for attmID in range(1, len(attachments_list) + 1):
+            obj_dir = os.path.join(tmp_dir, str(objID))
+            os.makedirs(obj_dir)
             FeatureLayer.attachments.download(oid = objID,\
-                                              attachment_id = 1,\
-                                              save_path = os.path\
-                                                  .join(tmp_dir, "tmp.jpeg"))
+                                              attachment_id = attmID,\
+                                              save_path = obj_dir)
 
 ## iNaturalist log-in
 from pyinaturalist import *
