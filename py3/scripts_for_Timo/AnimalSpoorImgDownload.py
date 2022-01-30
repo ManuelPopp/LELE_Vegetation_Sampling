@@ -61,7 +61,8 @@ for objID in FeatureObjectIDs:
         comment = df["NotesComments"][0]
         full_comment = comment
         specID = df["Species_ID"][0]
-        specID = speciesName[int(specID) - 1]
+        if specID is not None:
+            specID = speciesName[int(specID) - 1]
         if comment is None:
             Warning("Missing ID for object " + str(objID))
             identifier = "No_ID_obj_"# + str(objID)
