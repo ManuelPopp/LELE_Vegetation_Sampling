@@ -1,4 +1,4 @@
-# Prerequisites for using the iNaturalist API on Linux
+# Prerequisites for using pyinaturalist on Linux
 1) Install Python3 and pip3
 See also https://realpython.com/installing-python/#how-to-install-python-on-linux
 `
