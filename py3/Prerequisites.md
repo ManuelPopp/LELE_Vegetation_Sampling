@@ -1,4 +1,4 @@
-# Prerequisites for using the iNaturalist API
+# Prerequisites for using the iNaturalist API on Linux
 1) Install Python3 and pip3
 See also https://realpython.com/installing-python/#how-to-install-python-on-linux
 `
@@ -32,3 +32,8 @@ $ deactivate
 `
 $ which python
 `
+# Prerquisites for using pyinaturalist from within ArcGIS Pro
+1) Open ArcGIS Pro and click on Project > Python > Manage Environments
+2) Within the line "arcgispro-py3" click on the rectangular symbol to clone the environment
+3) Name the new environment, wait for the process to finish and activate it. Restart ArcGIS Pro to apply the changes.
+4) Open the Python Command Prompt installed with ArcGIS Pro and type `pip install pyinaturalist`
