@@ -106,3 +106,9 @@ FeatureLayer.append(item_id = csv_item.id, upload_format = "csv",\
 # remove temp dir
 import shutil
 shutil.rmtree(tmp_dir)
+
+## delete used csv object
+tmp_csv_old = gis.content.search("title: tmp_csv_feature_upload")
+for item in tmp_csv_old:
+    if item:
+        item.delete()
