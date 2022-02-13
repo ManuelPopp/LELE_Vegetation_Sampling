@@ -296,23 +296,3 @@ veg_bray_matr <- beta.pair.abund(VegAbundanceMatrix)$beta.bray
 plot(hclust(veg_bray_matr))
 
 dbRDA <- dbrda(veg_bray_matr)
-#############################################
-##### Landcover classification
-#############################################
-library("raster")
-library("cluster")
-imgs <- list.files(file.path(wd, "gis", "QGIS", "Sentinel2"), pattern = "\\.tif$", full.names = TRUE)[c(1, 3)]
-stk <- stack(imgs)
-names(stk) <- paste(substr(names(stk), 13, 15), substr(names(stk), 24, 31), substr(names(stk), 84, 85), sep = "")
-Sent2 <- crop(stk, extent(Lapalala))
-rm(stk)
-
-idx <- 1:ncell(Sent2)
-set.seed(99)
-K <- 9
-clust <- cluster::clara(na.omit(scale(as.data.frame(Sent2))), k = K)
-classified <- Sent2[[1]]
-classified[idx] <- clust$clustering
-x11()
-plot(classified, breaks = seq(1, K, 1), col = cols)
-writeRaster(classified, filename = paste(wd, "gis/QGIS/Classification/Classified.tif", sep = ""), format = "GTiff", overwrite = TRUE)
