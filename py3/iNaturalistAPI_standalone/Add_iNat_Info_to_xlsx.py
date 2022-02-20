@@ -6,11 +6,16 @@ Created on Thu Dec 30 16:03:53 2021
 @author: manuel
 """
 filepath_parent = "/home/manuel/Downloads"
-filename = "Veg_Lists_manual.xlsx"
+filename = "Vegetation List ASICS project.xlsx"
+sheet_name = "List of species"
+ID_field = "Notes"
+project_ID = "flora-fauna-of-the-sani-pass-road"
+ID_format = "S\d\w.\d\d\d"
+
+ID_format = ID_format.casefold()
 
 import os
 filepath = os.path.join(filepath_parent, filename)
-project_ID = "lele-herbs-and-grasses"
 
 from pyinaturalist import *
 observations = []
@@ -27,7 +32,10 @@ iNat_notes = list()
 for obs in observations:
     if obs["description"] is not None and obs["description"] != "":
         note = obs["description"]
-        taxon = obs["taxon"]["name"]
+        if obs["taxon"] is not None:
+            taxon = obs["taxon"]["name"]
+        else:
+            taxon = None
         url = obs["uri"]
         quality = obs["quality_grade"]
         iNat_data.append([taxon, url, quality])
@@ -37,7 +45,7 @@ for obs in observations:
 from openpyxl import Workbook, load_workbook
 
 wb = load_workbook(filepath)
-sht0 = wb["manual_veg_list"]
+sht0 = wb[sheet_name]
 c_names = [cell.value for cell in sht0[1]]
 
 # add missing columns
@@ -57,29 +65,40 @@ for c_name, v_name in zip(["iNaturalist_ID", "iNaturalist_taxon", \
     add_col(colnames = c_names, colname = c_name, varname = v_name)
 
 # check by row
+import re
+regEx = re.compile(ID_format)
+
+c = c_names.index(ID_field) + 1
 for r in range(2, sht0.max_row + 1):
-    iNaturalist_ID = sht0.cell(row = r, column = c_iNatID).value
-    if iNaturalist_ID is not None:
-        iNaturalist_ID = str(iNaturalist_ID)
-        matches = []
-        for note in iNat_notes:
-            if iNaturalist_ID in str(note):
-                matches.append(note)
-        if len(matches) < 1:
-            sht0.cell(row = r, column = c_iNatStat).value = "No matching " + \
-                "iNaturalist observation found."
-        elif len(matches) == 1:
-            data = iNat_data[iNat_notes.index(matches[0])]
-            print("r = " + str(r) + "note: " + note, " index: " + str(iNat_notes.index(note)) +\
-                  "iNatID: " + iNaturalist_ID)
-            sht0.cell(row = r, column = c_iNatTax).value = data[0]
-            sht0.cell(row = r, column = c_iNatURL).value = data[1]
-            sht0.cell(row = r, column = c_iNatStat).value = data[2]
-        else:
-            data = iNat_data[iNat_notes.index(note)]
-            sht0.cell(row = r, column = c_iNatTax).value = data[0]
-            sht0.cell(row = r, column = c_iNatURL).value = data[1]
-            sht0.cell(row = r, column = c_iNatStat).value = "iNaturalist" + \
-                "_ID ambiguous"
+    print("Searching for matching IDs", str(r - 1), "of", str(sht0.max_row))
+    iNaturalist_ID_value = sht0.cell(row = r, column = c).value
+    if iNaturalist_ID_value is not None:
+        if regEx.search(str(iNaturalist_ID_value).casefold()) is not None:
+            iNaturalist_ID = regEx.search(str(iNaturalist_ID_value)\
+                                          .casefold())[0]
+            matches = []
+            for note in iNat_notes:
+                if iNaturalist_ID in str(note).casefold():
+                    matches.append(note)
+            if len(matches) < 1:
+                sht0.cell(row = r,\
+                          column = c_iNatStat).value = "No matching " + \
+                    "iNaturalist observation found."
+            elif len(matches) == 1:
+                data = iNat_data[iNat_notes.index(matches[0])]
+                print("r = " + str(r) + "note: " + note, " index: " + \
+                      str(iNat_notes.index(note)) + \
+                      "iNatID: " + iNaturalist_ID)
+                sht0.cell(row = r, column = c_iNatID).value = iNaturalist_ID
+                sht0.cell(row = r, column = c_iNatTax).value = data[0]
+                sht0.cell(row = r, column = c_iNatURL).value = data[1]
+                sht0.cell(row = r, column = c_iNatStat).value = data[2]
+            else:
+                data = iNat_data[iNat_notes.index(note)]
+                sht0.cell(row = r, column = c_iNatID).value = iNaturalist_ID
+                sht0.cell(row = r, column = c_iNatTax).value = data[0]
+                sht0.cell(row = r, column = c_iNatURL).value = data[1]
+                sht0.cell(row = r, column = c_iNatStat)\
+                    .value = "iNaturalist" + "_ID ambiguous"
 wb.save(filepath)
 wb.close()
