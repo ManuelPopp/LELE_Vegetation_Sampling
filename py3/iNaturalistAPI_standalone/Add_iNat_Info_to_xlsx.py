@@ -5,11 +5,19 @@ Created on Thu Dec 30 16:03:53 2021
 
 @author: manuel
 """
+# path to folder containing the Excel sheet
 filepath_parent = "/home/manuel/Downloads"
+# Excel sheet file name
 filename = "Vegetation List ASICS project.xlsx"
+# Name of sheet containing the species-level data
 sheet_name = "List of species"
+# Name of column contining the IDs to connect to iNaturalist observations
 ID_field = "Notes"
+# Project ID (last part of URL to iNaturalist project)
 project_ID = "flora-fauna-of-the-sani-pass-road"
+# Format of the ID used in the iNaturalist observation comments as RegEx
+# hint: \d = any integer; \w = any letter/symbol (excluding line break);
+# . = any symbol
 ID_format = "S\d\w.\d\d\d"
 
 ID_format = ID_format.casefold()
