@@ -10,6 +10,13 @@ for(i in 1:NROW(packages)){
   }
 }
 
+# ArcGIS connection
+if(!require("arcgisbinding", character.only = TRUE)){
+  install.packages("arcgisbinding", repos = "https://r.esri.com", type = "win.binary")
+  library("arcgisbinding", character.only = TRUE)
+}
+arc.check_product()
+
 #############################################
 ##### Set directories
 #############################################
@@ -26,12 +33,6 @@ if(Sys.info()['sysname'] == "Windows"){
 }
 
 dir_fig <- file.path(wd, "fig")
-
-# ArcGIS connection
-if(!require("arcgisbinding", character.only = TRUE)){
-  install.packages("arcgisbinding", repos = "https://r.esri.com", type = "win.binary")
-  library("arcgisbinding", character.only = TRUE)
-}
 
 #############################################
 ##### Set style options
@@ -62,8 +63,6 @@ colz <- c(
 ##### Load data
 #############################################
 # ArcGIS Online data
-arc.check_product()
-
 Blocks <- arc.data2sf(
   arc.select(
     arc.open(
