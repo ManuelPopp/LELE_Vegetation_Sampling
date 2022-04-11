@@ -1,4 +1,16 @@
 #############################################
+##### Load packages
+#############################################
+packages <- c("sp", "sf", "dplyr", "reshape2", "betapart", "vegan",
+              "ggplot2", "WorldFlora", "xtable", "stringi")
+for(i in 1:NROW(packages)){
+  if(!require(packages[i], character.only = TRUE)){
+    install.packages(packages[i])
+    library(packages[i], character.only = TRUE)
+  }
+}
+
+#############################################
 ##### Set directories
 #############################################
 if(Sys.info()['sysname'] == "Windows"){
@@ -14,18 +26,6 @@ if(Sys.info()['sysname'] == "Windows"){
 }
 
 dir_fig <- file.path(wd, "fig")
-
-#############################################
-##### Load packages
-#############################################
-packages <- c("sp", "sf", "dplyr", "reshape2", "betapart", "vegan",
-              "ggplot2", "WorldFlora", "xtable", "stringi")
-for(i in 1:NROW(packages)){
-  if(!require(packages[i], character.only = TRUE)){
-    install.packages(packages[i])
-    library(packages[i], character.only = TRUE)
-  }
-}
 
 # ArcGIS connection
 if(!require("arcgisbinding", character.only = TRUE)){
